@@ -36,17 +36,21 @@ class Frame {
 
     render(){
         Drawing.context.lineWidth = this.borderWidth;
-        Drawing.context.sctrokeStyle = this.borderColor;
-        Drawing.context.strokeRect(this.point.x, this.point.y, this.size.width, this.size.height);
+        Drawing.context.strokeStyle = this.borderColor;
+        Drawing.context.strokeRect(
+            this.point.x + this.borderWidth / 2,
+            this.point.y + this.borderWidth / 2,
+            this.size.width - this.borderWidth,
+            this.size.height - this.borderWidth);
 
-        if (this.filled){
-        Drawing.context.fillStyle = this.fillColor;
-        Drawing.context.fillRect(
-            this.point.x + this.borderWidth,
-            this.point.y + this.borderWidth,
-            this.size.width - this.borderWidth *2,
-            this.size.height - this.borderWidth *2
-        );
+        if (this.filled) {
+            Drawing.context.fillStyle = this.fillColor;
+            Drawing.context.fillRect(
+                this.point.x + this.borderWidth,
+                this.point.y + this.borderWidth,
+                this.size.width - this.borderWidth * 2,
+                this.size.height - this.borderWidth * 2
+            );
         }
     }
 
