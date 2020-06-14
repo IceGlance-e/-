@@ -12,6 +12,9 @@ include("Js_Files/Animation.js");
 include("Js_Files/Drawing.js");
 include ("Js_Files/Frame.js");
 include ("Js_Files/Text.js");
+include("Js_Files/Layer.js");
+include("Js_Files/LayerMainMenu.js");
+
 class Game {
 
     constructor() {
@@ -41,39 +44,12 @@ class Game {
         this.framecount = 0;
         this.fps = 0;
 
+        this.layers = [];
+
+        let mainMenuLayer = new LayerMainMenu();
+        this.addLayer(mainMenuLayer);
 
 		this.init();
-
-		
-		this.mainMenuPopup = new Frame(new Point (30,0) , new Size ( 40,100 ) );
-		this.mainMenuPopup.setImageSrc("Done_assets/popup_2.png");
-		
-		this.mainMenuButton_1 = new Frame( new Point (36,10), new Size (28,15) );
-		this.mainMenuButton_1.setImageSrc("Done_assets/Yellow_button_2.png");
-		
-		
-		this.mainMenuButton_1_text = new Text ( new Point (50,17.5) );
-		this.mainMenuButton_1_text.setFontSize("48px Arial");
-		this.mainMenuButton_1_text.setFillColor("#000000");
-		this.mainMenuButton_1_text.setText("Play");
-		this.mainMenuButton_1_text.setWidth(1500);
-		
-
-		
-		this.mainMenuButton_2 = new Frame( new Point (36, 32) , new Size (28,15) );
-		this.mainMenuButton_2.setImageSrc("Done_assets/Yellow_button_2.png");
-		
-		this.mainMenuButton_3 = new Frame ( new Point (36,54), new Size (28,15) );
-		this.mainMenuButton_3.setImageSrc("Done_assets/Yellow_button_2.png");
-		
-		this.mainMenuButton_4 = new Frame ( new Point ( 36, 76), new Size (28,15) ) ;
-		this.mainMenuButton_4.setImageSrc("Done_assets/Yellow_button_2.png");
-		this.frames = [];
-		this.frames.push(this.mainMenuButton_1);
-		this.frames.push(this.mainMenuButton_2);
-		this.frames.push(this.mainMenuButton_3);
-		this.frames.push(this.mainMenuButton_4);
-		this.frames.push(this.mainMenuPopup);
 		
 		this.loop = this.loop.bind(this);
     }
@@ -145,15 +121,16 @@ class Game {
         this.framecount++;
     }
 
+    addLayer(layer) {
+        this.layers.push(layer);
+    }
+
     render() {
         Drawing.canvas.width = Drawing.canvas.width;
-		//this.chetotamFrame.render();
-		this.mainMenuPopup.render();
-		this.mainMenuButton_1.render();
-		this.mainMenuButton_2.render();
-		this.mainMenuButton_3.render();
-		this.mainMenuButton_4.render();
-		this.mainMenuButton_1_text.drawCenterText();
+
+        for (let layer of this.layers) {
+            layer.render();
+        }
 	
     //TODO: class frame, draw
 
