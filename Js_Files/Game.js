@@ -17,6 +17,16 @@ include("Js_Files/LayerMainMenu.js");
 
 class Game {
 
+    static game = null;
+
+    static getInstance() {
+        if (!this.game) {
+            this.game = new Game();
+        }
+
+        return this.game;
+    }
+
     constructor() {
 
 
@@ -49,6 +59,11 @@ class Game {
         let mainMenuLayer = new LayerMainMenu();
         this.addLayer(mainMenuLayer);
 
+        this.onMouseMove = this.onMouseMove.bind(this);
+        this.onMouseDown = this.onMouseDown.bind(this);
+        this.onMouseUp = this.onMouseUp.bind(this);
+        this.onMouseOut = this.onMouseOut.bind(this);
+
 		this.init();
 		
 		this.loop = this.loop.bind(this);
@@ -60,7 +75,7 @@ class Game {
         Drawing.canvas.addEventListener("mouseup", this.onMouseUp);
         Drawing.canvas.addEventListener("mouseout", this.onMouseOut);
 
-        //TODO: init filed
+        //TODO: init field
 
         this.newGame();
     }
@@ -125,6 +140,18 @@ class Game {
         this.layers.push(layer);
     }
 
+    removeLayer(layerType) {
+        this.layers = this.layers.filter(layer => layer.layerType !== layerType);
+    }
+
+    getTopLayer() {
+        if (this.layers.length <= 0) {
+            return null;
+        }
+
+        return this.layers[this.layers.length - 1];
+    }
+
     render() {
         Drawing.canvas.width = Drawing.canvas.width;
 
@@ -171,10 +198,24 @@ class Game {
     }
 
     onMouseUp(e) {
+        let mousePos = this.getMousePos(e);
 
+        let topLayer = this.getTopLayer();
+
+        if (topLayer) {
+            topLayer.onMouseUp(mousePos);
+        }
     }
 
     onMouseOut(e) {
 
+    }
+
+    getMousePos(e) {
+        let rect = Drawing.canvas.getBoundingClientRect();
+        return {
+            x: Math.round((e.clientX - rect.left) / (rect.right - rect.left) * Drawing.canvas.width),
+            y: Math.round((e.clientY - rect.top) / (rect.bottom - rect.top) * Drawing.canvas.height)
+        };
     }
 }

@@ -11,6 +11,7 @@ function include(url) {
 
 const LayerType = {
     MainMenu: 0,
+    Game: 1,
     None: 999999
 };
 
@@ -37,5 +38,9 @@ class Layer
         {
             renderable.render();
         }
+    }
+
+    onMouseUp(mousePos) {
+
     }
 }

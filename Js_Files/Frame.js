@@ -67,4 +67,9 @@ class Frame {
 		Drawing.context.drawImage( image, this.point.x, this.point.y, this.size.width, this.size.height );
 	}
 
+	isPointInside(point) {
+        return point.x >= this.point.x && point.x <= this.point.x + this.size.width &&
+            point.y >= this.point.y && point.y <= this.point.y + this.size.height;
+    }
+
 }

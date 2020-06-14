@@ -10,6 +10,7 @@ function include(url) {
 }
 
 include("Js_Files/Layer.js");
+include("Js_Files/LayerGame.js");
 
 class LayerMainMenu extends Layer
 {
@@ -22,15 +23,15 @@ class LayerMainMenu extends Layer
         let mainMenuPopup = new Frame(new Point (30,0) , new Size ( 40,100 ) );
         mainMenuPopup.setImageSrc("Done_assets/popup_2.png");
 
-        let mainMenuButton_1 = new Frame( new Point (36,10), new Size (28,15) );
-        mainMenuButton_1.setImageSrc("Done_assets/Yellow_button_2.png");
+        this.playButton = new Frame( new Point (36,10), new Size (28,15) );
+        this.playButton.setImageSrc("Done_assets/Yellow_button_2.png");
 
-        let mainMenuButton_1_text = new Text ( new Point (50,17.5) );
-        mainMenuButton_1_text.setFontSize("48px Arial");
-        mainMenuButton_1_text.setFillColor("#000000");
-        mainMenuButton_1_text.setText("Play");
-        mainMenuButton_1_text.setWidth(1500);
-        mainMenuButton_1_text.setHorizontalAlignment(Text.HorizontalAlignmentType.Center);
+        let playButton_text = new Text ( new Point (50,17.5) );
+        playButton_text.setFontSize("48px Arial");
+        playButton_text.setFillColor("#000000");
+        playButton_text.setText("Play");
+        playButton_text.setWidth(1500);
+        playButton_text.setHorizontalAlignment(Text.HorizontalAlignmentType.Center);
 
         let mainMenuButton_2 = new Frame( new Point (36, 32) , new Size (28,15) );
         mainMenuButton_2.setImageSrc("Done_assets/Yellow_button_2.png");
@@ -42,10 +43,30 @@ class LayerMainMenu extends Layer
         mainMenuButton_4.setImageSrc("Done_assets/Yellow_button_2.png");
 
         this.addRenderable(mainMenuPopup);
-        this.addRenderable(mainMenuButton_1);
+        this.addRenderable(this.playButton);
+        this.addRenderable(playButton_text);
         this.addRenderable(mainMenuButton_2);
         this.addRenderable(mainMenuButton_3);
         this.addRenderable(mainMenuButton_4);
-        this.addRenderable(mainMenuButton_1_text);
     }
+
+    onPlayReleased() {
+
+        let game = Game.getInstance();
+
+        game.removeLayer(LayerType.MainMenu);
+
+        let gameLayer = new LayerGame();
+        game.addLayer(gameLayer);
+
+    }
+
+    onMouseUp(mousePos) {
+        super.onMouseUp(mousePos);
+
+        if (this.playButton.isPointInside(mousePos)) {
+            this.onPlayReleased();
+        }
+    }
+
 }

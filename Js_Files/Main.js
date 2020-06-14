@@ -10,8 +10,8 @@ function include(url) {
 }
 include("Js_Files/Game.js");
 
-window.onload = function(){
-    let game = new Game(); //Создаем объект класса Game
+window.onload = function() {
+    let game = Game.getInstance(); //Создаем объект класса Game
     game.loop(0);
     console.dir(game);
-}
+};
