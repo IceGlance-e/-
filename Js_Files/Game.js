@@ -14,6 +14,7 @@ include ("Js_Files/Frame.js");
 include ("Js_Files/Text.js");
 include("Js_Files/Layer.js");
 include("Js_Files/LayerMainMenu.js");
+include("Js_Files/Level.js");
 
 class Game {
 
@@ -65,6 +66,8 @@ class Game {
         this.onMouseOut = this.onMouseOut.bind(this);
 
 		this.init();
+		
+		let level = new Level;
 		
 		this.loop = this.loop.bind(this);
     }

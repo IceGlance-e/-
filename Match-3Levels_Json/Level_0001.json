@@ -1,0 +1,8 @@
+{ 
+  "x" : "250", 
+  "y" : "113", 
+  "columns" : "9",
+  "rows" : "9",
+  "moves" : "15",
+  "winObject" : "Blue_Token"
+}
