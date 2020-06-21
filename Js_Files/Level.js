@@ -1,5 +1,5 @@
 function include(url) {
-    if(document.getElementById(url)){
+    if (document.getElementById(url)) {
         return;
     }
 
@@ -13,40 +13,37 @@ include("Js_Files/Layer.js");
 include("Js_Files/Game.js");
 include("Js_Files/Frame.js");
 
-class Level
-{
-    constructor()
-    {
-		
-		
-		this.columns = 0;
-		this.rows = 0;
-		this.moves = 0;
-		this.typeWinObject = "";
-		this.countWinObject = 0;
-
+class Level {
+    constructor() {
+        this.columns = 0;
+        this.rows = 0;
+        this.moves = 0;
+        this.typeWinObject = Tile.tilesTypes.Empty;
+        this.countWinObject = 0;
+        this.scoreToReachStar = 0;
     }
-	
-	setColumns(countColumns){
-		
-		this.columns = countColumns;
-	}
-	
-	setRows(countRows){
-		
-		this.rows = countRows;
-	}
-	
-	setMoves(countMoves){
-		this.moves = countMoves;
-	}
-	
-	setTypeWinObject(winObject){
-		
-		this.typeWinObject = winObject;
-		
-	}
-	setCountWinObject (count){
-		this.countWinObject = count;
-	}
+
+    setColumns(countColumns) {
+        this.columns = countColumns;
+    }
+
+    setRows(countRows) {
+        this.rows = countRows;
+    }
+
+    setMoves(countMoves) {
+        this.moves = countMoves;
+    }
+
+    setTypeWinObject(winObject) {
+        this.typeWinObject = winObject;
+    }
+
+    setCountWinObject(count) {
+        this.countWinObject = count;
+    }
+
+    setScoreToReachStart(score) {
+        this.scoreToReachStar = score;
+    }
 }

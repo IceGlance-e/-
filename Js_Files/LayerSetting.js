@@ -91,8 +91,8 @@ class LayerSetting extends Layer
 		let infoButton = new Frame (new Point ( 6, 6), new Size ( 7,7) );
 		infoButton.setImageSrc("Done_assets/question.png");
 		
-		let reloadButton = new Frame ( new Point ( 88,6), new Size ( 6,7) );
-		reloadButton.setImageSrc("Done_assets/reload.png");
+		this.reloadButton = new Frame ( new Point ( 88,6), new Size ( 6,7) );
+		this.reloadButton.setImageSrc("Done_assets/reload.png");
 		
 		
 		this.addRenderable(settingMainPopup);
@@ -112,11 +112,27 @@ class LayerSetting extends Layer
 		this.addRenderable(redButton_minus);
 		this.addRenderable(redButton_plus);
 		this.addRenderable(infoButton);
-		this.addRenderable(reloadButton);
-
-		
-		
+		this.addRenderable(this.reloadButton);
 
     }
-	
+
+    onCloseReleased() {
+
+    	let game = Game.getInstance();
+
+    	game.removeLayer(LayerType.Setting);
+
+		let settingLayer = new LayerMainMenu();
+		game.addLayer(settingLayer);
+
+	}
+
+    onMouseUp(mousePos) {
+		super.onMouseUp(mousePos);
+
+		if (this.reloadButton.isPointInside(mousePos)) {
+			this.onCloseReleased();
+		}
+	}
+
 }

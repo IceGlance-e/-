@@ -36,11 +36,12 @@ class Field {
     static normalScale = 0.8;
     static maxScale = 0.2;
 
+    static levels = [];
+
     constructor(leftPoint, size) {
         this.point = leftPoint;
         this.size = size;
 
-        this.levels = [];
         this.level = null;
 
         this.tiles = [];
@@ -68,20 +69,47 @@ class Field {
         this.clusters = [];
         this.moves = [];
 
-        this.generateLevels();
+        this.currentLevelIndex = 0;
 
         this.init();
     }
 
-    generateLevels() {
+    static generateLevels() {
         let level001 = new Level();
         level001.setColumns(8);
         level001.setRows(8);
         level001.setMoves(30);
-        level001.setTypeWinObject(Tile.tilesTypes.Blue);
-        level001.setCountWinObject(30);
+        level001.setTypeWinObject(Tile.tilesTypes.Yellow);
+        level001.setCountWinObject(6);
+        level001.setScoreToReachStart(2000);
 
         this.levels.push(level001);
+
+        let level002 = new Level();
+        level002.setColumns(5);
+        level002.setRows(6);
+        level002.setMoves(60);
+        level002.setTypeWinObject(Tile.tilesTypes.Red);
+        level002.setCountWinObject(60);
+        level002.setScoreToReachStart(10000);
+
+        this.levels.push(level002);
+
+        let game = Game.getInstance();
+        let levelProgress = game.getUserInfo().levelProgress;
+
+        for (let i = 0; i < this.levels.length; i++) {
+            let levelNumber = i + 1;
+
+            if (!levelProgress.find(level => level.levelNumber === levelNumber)) {
+                let m3levelInfo = new Match3Level();
+                m3levelInfo.levelNumber = levelNumber;
+
+                levelProgress.push(m3levelInfo);
+            }
+        }
+
+        Game.getInstance().saveGame();
     }
 
     getGameState() {
@@ -98,7 +126,9 @@ class Field {
 
     init() {
 
-        this.level = this.levels[0];
+        this.gameState = Field.gameStates.init;
+
+        this.level = Field.levels[this.currentLevelIndex];
 
         let tileWidth = this.size.widthP / this.level.columns;
         let tileHeight = this.size.heightP / this.level.rows;
@@ -112,50 +142,63 @@ class Field {
         this.findClusters();
     }
 
+    setCurrentLevel(levelNumber) {
+        if (levelNumber - 1 >= 0 && levelNumber <= this.levels.length) {
+            this.currentLevelIndex = levelNumber - 1;
+            this.init();
+        }
+    }
+
+    getLevelNumber() {
+        return this.currentLevelIndex + 1;
+    }
+
     consolePrintLevel() {
-		for (let i = 0; i < this.level.rows; i++) {
-			let row = "";
-			for (let j = 0; j < this.level.columns; j++) {
-				row += this.tiles[i][j].typeTile;
-			}
-			console.log(row);
-		}
-	}
+        for (let i = 0; i < this.level.rows; i++) {
+            let row = "";
+            for (let j = 0; j < this.level.columns; j++) {
+                row += this.tiles[i][j].typeTile;
+            }
+            console.log(row);
+        }
+    }
 
-	createLevel() {
-		let done = false;
+    createLevel() {
+        let done = false;
 
-		// Keep generating levels until it is correct
-		while (!done) {
+        // Keep generating levels until it is correct
+        while (!done) {
 
-			this.tiles = [];
-			// Create a level with random tiles
-			for (let i = 0; i < this.level.rows; i++) {
-				this.tiles[i] = [];
-				for (let j = 0; j < this.level.columns; j++) {
+            this.tiles = [];
+            // Create a level with random tiles
+            for (let i = 0; i < this.level.rows; i++) {
+                this.tiles[i] = [];
+                for (let j = 0; j < this.level.columns; j++) {
 
-					this.tiles[i][j] = new Tile(new Point(
-						this.point.xP + j * this.tileSize.widthP,
-						this.point.yP + i * this.tileSize.heightP),
-						this.tileSize);
+                    this.tiles[i][j] = new Tile(new Point(
+                        this.point.xP + j * this.tileSize.widthP,
+                        this.point.yP + i * this.tileSize.heightP),
+                        this.tileSize);
 
-					this.tiles[i][j].setTypeTile(this.getRandomTileType());
-				}
-			}
+                    this.tiles[i][j].setTypeTile(this.getRandomTileType());
+                }
+            }
 
-			// Resolve the clusters
-			this.resolveClusters();
+            // Resolve the clusters
+            this.resolveClusters();
 
-			this.consolePrintLevel();
-			// Check if there are valid moves
-			this.findMoves();
+            // Debug console printing
+            //this.consolePrintLevel();
 
-			// Done when there is a valid move
-			if (this.moves.length > 0) {
-				done = true;
-			}
-		}
-	}
+            // Check if there are valid moves
+            this.findMoves();
+
+            // Done when there is a valid move
+            if (this.moves.length > 0) {
+                done = true;
+            }
+        }
+    }
 
     getRandomTileType() {
         let tokenTypesArray = [];
@@ -233,7 +276,7 @@ class Field {
                             if (this.clusters.length > 0) {
 
                                 for (let i = 0; i < this.clusters.length; i++) {
-                                    this.gameLayer.addScore(this.clusters[i].length);
+                                    this.gameLayer.addScore(100 * this.clusters[i].length);
                                 }
 
                                 this.removeClusters();
@@ -272,6 +315,8 @@ class Field {
                                 // valid swap
                                 this.animationState = Field.animationStates.resolveClusters;
                                 this.gameState = Field.gameStates.resolve;
+
+                                this.gameLayer.spendMove();
                             } else {
                                 this.animationState = Field.animationStates.reverseSwapSelectedTiles;
                             }
@@ -462,23 +507,23 @@ class Field {
         this.clusters = []
     }
 
-	resolveClusters() {
-		// Check for clusters
-		this.findClusters();
+    resolveClusters() {
+        // Check for clusters
+        this.findClusters();
 
-		// While there are clusters left
-		while (this.clusters.length > 0) {
+        // While there are clusters left
+        while (this.clusters.length > 0) {
 
-			// Remove clusters
-			this.removeClusters();
+            // Remove clusters
+            this.removeClusters();
 
-			// Shift tiles
-			this.shiftTiles();
+            // Shift tiles
+            this.shiftTiles();
 
-			// Check if there are clusters left
-			this.findClusters();
-		}
-	}
+            // Check if there are clusters left
+            this.findClusters();
+        }
+    }
 
     removeClusters() {
 
@@ -492,15 +537,15 @@ class Field {
 
                 let tile = this.tiles[cluster.row + rowOffset][cluster.column + columnOffset];
 
-                this.onTileDestroyed(tile.type);
+                this.onTileDestroyed(tile.typeTile);
 
                 tile.typeTile = Tile.tilesTypes.Empty;
 
-				if (cluster.horizontal) {
-					columnOffset++;
-				} else {
-					rowOffset++;
-				}
+                if (cluster.horizontal) {
+                    columnOffset++;
+                } else {
+                    rowOffset++;
+                }
             }
         }
 
@@ -557,7 +602,15 @@ class Field {
     }
 
     onTileDestroyed(tileType) {
+        if (this.gameState !== Field.gameStates.resolve) {
+            return;
+        }
 
+        if (tileType === this.level.typeWinObject) {
+            if (this.gameLayer) {
+                this.gameLayer.addProgress(1);
+            }
+        }
     }
 
     getTileUnderMouse(mousePos) {
@@ -585,6 +638,21 @@ class Field {
 
     onWin() {
         this.gameState = Field.gameStates.win;
+
+        let levelNumber = this.getLevelNumber();
+        let match3LevelInfo = Game.getInstance().getUserInfo().levelProgress.find(level => level.levelNumber === levelNumber);
+        match3LevelInfo.isPassed = true;
+
+        let starCount = Math.floor(this.gameLayer.getScore() / this.level.scoreToReachStar);
+        if (starCount > 3) {
+            starCount = 3;
+        }
+
+        if (match3LevelInfo.starsCount < starCount) {
+            match3LevelInfo.starsCount = starCount;
+        }
+
+        Game.getInstance().saveGame();
     }
 
     onLoose() {

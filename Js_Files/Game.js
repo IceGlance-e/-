@@ -17,6 +17,14 @@ include("Js_Files/LayerMainMenu.js");
 include("Js_Files/Level.js");
 include("Js_Files/LayerPopup.js");
 
+class Match3Level {
+    constructor() {
+        this.isPassed = false;
+        this.levelNumber = 0;
+        this.starsCount = 0;
+    }
+}
+
 class Game {
 
     static game = null;
@@ -47,9 +55,43 @@ class Game {
         this.onMouseUp = this.onMouseUp.bind(this);
         this.onMouseOut = this.onMouseOut.bind(this);
 
+        this.userInfo = {
+            levelProgress: [],
+            showMovesBoosterCount: 3,
+            aiBotUseCount: 5
+        };
+
+        this.isLevelsGenerated = false;
+
+        this.loadSave();
+
 		this.init();
 
 		this.loop = this.loop.bind(this);
+    }
+
+    loadSave() {
+        let name = "gameCookie=";
+        let decodedCookie = decodeURIComponent(document.cookie);
+        let ca = decodedCookie.split(';');
+        for(let i = 0; i <ca.length; i++) {
+            let c = ca[i];
+            while (c.charAt(0) === ' ') {
+                c = c.substring(1);
+            }
+            if (c.indexOf(name) === 0) {
+                this.userInfo = JSON.parse(c.substring(name.length, c.length));
+                return;
+            }
+        }
+    }
+
+    saveGame() {
+        document.cookie = "gameCookie=" + JSON.stringify(this.userInfo) + ";expires=Thu, 18 Dec 2300 12:00:00 UTC";
+    }
+
+    getUserInfo() {
+        return this.userInfo;
     }
 
     init() {
@@ -84,6 +126,12 @@ class Game {
     }
 
     updateFps(dt) {
+
+        if (!this.isLevelsGenerated) {
+            Field.generateLevels();
+            this.isLevelsGenerated = true;
+        }
+
         if (this.fpstime > 0.25) {
             // Calculate fps
             this.fps = Math.round(this.framecount / this.fpstime);
@@ -96,6 +144,10 @@ class Game {
         // Increase time and framecount
         this.fpstime += dt;
         this.framecount++;
+    }
+
+    getFps() {
+        return this.fps;
     }
 
     addLayer(layer) {
