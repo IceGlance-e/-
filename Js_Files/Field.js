@@ -78,11 +78,24 @@ class Field {
         let level001 = new Level();
         level001.setColumns(8);
         level001.setRows(8);
-        level001.setMoves(5);
+        level001.setMoves(30);
         level001.setTypeWinObject(Tile.tilesTypes.Yellow);
         level001.setCountWinObject(6);
         level001.setScoreToReachStart(2000);
 
+        this.levels.push(level001);
+        this.levels.push(level001);
+        this.levels.push(level001);
+        this.levels.push(level001);
+        this.levels.push(level001);
+        this.levels.push(level001);
+        this.levels.push(level001);
+        this.levels.push(level001);
+        this.levels.push(level001);
+        this.levels.push(level001);
+        this.levels.push(level001);
+        this.levels.push(level001);
+        this.levels.push(level001);
         this.levels.push(level001);
 
         let level002 = new Level();
@@ -143,7 +156,7 @@ class Field {
     }
 
     setCurrentLevel(levelNumber) {
-        if (levelNumber - 1 >= 0 && levelNumber <= this.levels.length) {
+        if (levelNumber - 1 >= 0 && levelNumber <= Field.levels.length) {
             this.currentLevelIndex = levelNumber - 1;
             this.init();
         }

@@ -235,6 +235,11 @@ class LayerGame extends Layer
         return false;
     }
 
+    loadLevelByNumber(levelNumber) {
+        this.reset();
+        this.field.setCurrentLevel(levelNumber);
+    }
+
     loadLastLevel() {
         this.reset();
         this.field.loadLastLevel();
