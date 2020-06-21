@@ -30,25 +30,6 @@ class Game {
 
     constructor() {
 
-
-        this.winObject = {
-            type: 0,
-            count: 25,
-            progress: 0
-        };
-
-        this.maxMoves = 29;
-        this.movesLeft = 0;
-
-        this.score = 0;
-
-        // Current move
-        this.currentmove = {column1: 0, row1: 0, column2: 0, row2: 0};
-
-        // Game states
-        this.gamestates = {init: 0, ready: 1, resolve: 2, over: 3, win: 4};
-        this.gamestate = this.gamestates.init;
-
         //For FPS Calculator
         this.lastframe = 0;
         this.fpstime = 0;
@@ -67,8 +48,6 @@ class Game {
 
 		this.init();
 		
-		let level = new Level;
-		
 		this.loop = this.loop.bind(this);
     }
 
@@ -77,8 +56,6 @@ class Game {
         Drawing.canvas.addEventListener("mousedown", this.onMouseDown);
         Drawing.canvas.addEventListener("mouseup", this.onMouseUp);
         Drawing.canvas.addEventListener("mouseout", this.onMouseOut);
-
-        //TODO: init field
 
         this.newGame();
     }
@@ -97,30 +74,11 @@ class Game {
         this.lastframe = tframe;
 
         this.updateFps(dt);
-        switch (this.gamestate) {
-            case  this.gamestates.ready:
-                // Game is ready for player input
-                if (this.winObject.progress >= this.winObject.count) {
-                    this.gamestate = this.gamestates.win;
-                    return;
-                }
 
-                if (true /* TODO: !field has Moves */) {
-                    //TODO: field create level
-                }
+        let topLayer = this.getTopLayer();
 
-                // Check for game over
-                if (this.movesLeft <= 0) {
-                    this.gamestate = this.gamestates.over;
-                    return;
-                }
-            case this.gamestates.resolve:
-                Animation.time += dt;
-                //TODO: field update.
-                break;
-
-                //TODO Bot Class
-                break;
+        if (topLayer) {
+            topLayer.update(dt);
         }
     }
 
@@ -161,43 +119,30 @@ class Game {
         for (let layer of this.layers) {
             layer.render();
         }
-	
-    //TODO: class frame, draw
-
-    //TODO: draw Labels
-    //TODO: draw buttons
-
-    //TODO: field render
-
-    //TODO: current popup
     }
 
     newGame() {
-        this.score = 0;
-
-        this.movesLeft = this.maxMoves;
-
-        this.gamestate = this.gamestates.ready;
-        // TODO: Class popup, currentPopup = null;
-
-        // TODO: field create level
-
-        this.taskInLevel();
-
-        //TODO: field find moves, cluster
-    }
-
-    taskInLevel() {
-        this.winObject.progress = 0;
-        this.winObject.type = 1; // TODO: filed getRandomTile();
+        // implement ?
     }
 
     onMouseDown(e) {
+        let mousePos = this.getMousePos(e);
 
+        let topLayer = this.getTopLayer();
+
+        if (topLayer) {
+            topLayer.onMouseDown(mousePos);
+        }
     }
 
     onMouseMove(e) {
+        let mousePos = this.getMousePos(e);
 
+        let topLayer = this.getTopLayer();
+
+        if (topLayer) {
+            topLayer.onMouseMove(mousePos);
+        }
     }
 
     onMouseUp(e) {
@@ -211,7 +156,13 @@ class Game {
     }
 
     onMouseOut(e) {
+        let mousePos = this.getMousePos(e);
 
+        let topLayer = this.getTopLayer();
+
+        if (topLayer) {
+            topLayer.onMouseOut(mousePos);
+        }
     }
 
     getMousePos(e) {

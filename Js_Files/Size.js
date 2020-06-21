@@ -14,6 +14,9 @@ include("Drawing.js");
 
 class Size {
     constructor(width, height) {
+        this.widthP = width;
+        this.heightP = height;
+
         this.width = Math.floor(Drawing.canvas.width * width / 100);
         this.height = Math.floor(Drawing.canvas.height * height / 100);
     }

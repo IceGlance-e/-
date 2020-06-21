@@ -19,20 +19,69 @@ class LayerGame extends Layer
         super();
 
         this.setLayerType(LayerType.Game);
-		this.levels = [];
-		
-		let level = new Field(new Point(38,10));
-		this.levels.push(level);
-		
-		
 
+        this.field = new Field(new Point(20,10), new Size(60, 80));
+        this.field.setGameLayer(this);
+
+        this.addRenderable(this.field);
+
+        this.progress = 0; // objective progress
+        this.score = 0;
+        this.spentMoves = 0;
     }
-	
-	
-	render(){
-		
-	this.levels[0].render();
-		
-		
-	}
+
+    newGame() {
+        this.score = 0;
+        this.spentMoves = 0;
+        this.progress = 0;
+
+        this.field.init();
+    }
+
+    addScore(score) {
+        this.score += score;
+    }
+
+    update(dt) {
+        super.update(dt);
+
+        if (this.field.getGameState() === Field.gameStates.ready) {
+
+            if (this.progress >= this.field.getLevel().progress) {
+                this.field.onWin();
+                return;
+            }
+
+            if (this.spentMoves >= this.field.getLevel().moves) {
+                this.field.onLoose();
+                return;
+            }
+        } else {
+            this.field.update(dt);
+        }
+    }
+
+	onMouseUp(mousePos) {
+        super.onMouseUp(mousePos);
+
+        this.field.onMouseUp(mousePos);
+    }
+
+    onMouseDown(mousePos) {
+        super.onMouseDown(mousePos);
+
+        this.field.onMouseDown(mousePos);
+    }
+
+    onMouseMove(mousePos) {
+        super.onMouseMove(mousePos);
+
+        this.field.onMouseMove(mousePos);
+    }
+
+    onMouseOut(mousePos) {
+        super.onMouseOut(mousePos);
+
+        this.field.onMouseOut(mousePos);
+    }
 }

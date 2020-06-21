@@ -43,7 +43,23 @@ class Layer
         }
     }
 
+    update(dt) {
+
+    }
+
+    onMouseMove(mousePos) {
+
+    }
+
+    onMouseDown(mousePos) {
+
+    }
+
     onMouseUp(mousePos) {
+
+    }
+
+    onMouseOut(mousePos) {
 
     }
 }

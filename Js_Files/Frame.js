@@ -19,11 +19,10 @@ class Frame {
         this.size = size;
 
         this.filled = false;
-        this.fillColor = "rgba(0,0,0,0.5)"
+        this.fillColor = "rgba(0,0,0,0.5)";
         this.borderWidth = 1;
-        this.borderColor = "rgb(0 , 0, 0, )";
+        this.borderColor = "rgb(0, 0, 0, 0)";
 		this.src = '';
-
 
     }
 

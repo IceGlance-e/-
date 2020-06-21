@@ -14,6 +14,9 @@ include("Drawing.js");
 
 class Point {
     constructor(x, y) {
+        this.xP = x;
+        this.yP = y;
+
         this.x = Math.floor(Drawing.canvas.width * x / 100);
         this.y = Math.floor(Drawing.canvas.height * y / 100);
     }
