@@ -14,7 +14,7 @@ include("Js_Files/Game.js");
 include("Js_Files/Tile.js");
 include("Js_Files/Point.js");
 include("Js_Files/Size.js");
-
+include("Js_Files/LayerLosePopup.js");
 
 class Field {
 
@@ -78,7 +78,7 @@ class Field {
         let level001 = new Level();
         level001.setColumns(8);
         level001.setRows(8);
-        level001.setMoves(30);
+        level001.setMoves(5);
         level001.setTypeWinObject(Tile.tilesTypes.Yellow);
         level001.setCountWinObject(6);
         level001.setScoreToReachStart(2000);
@@ -88,7 +88,7 @@ class Field {
         let level002 = new Level();
         level002.setColumns(5);
         level002.setRows(6);
-        level002.setMoves(60);
+        level002.setMoves(4);
         level002.setTypeWinObject(Tile.tilesTypes.Red);
         level002.setCountWinObject(60);
         level002.setScoreToReachStart(10000);
@@ -705,6 +705,9 @@ class Field {
         let game = Game.getInstance();
         let userInfo = game.getUserInfo();
         userInfo.coins += Math.floor(game.getLayer(LayerType.Game).getScore() / 100);
+
+        let looseLayer = new LayerLosePopup();
+        game.addLayer(looseLayer);
     }
 
     canSwapTiles(x1, y1, x2, y2) {

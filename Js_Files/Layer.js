@@ -15,7 +15,8 @@ const LayerType = {
 	Setting: 2,
 	Shop: 3,
 	SelectLevel: 4,
-	WinPopup : 5, 
+	WinPopup : 5,
+    LosePopup: 6,
     None: 999999
 };
 
