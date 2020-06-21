@@ -11,6 +11,9 @@ function include(url) {
 
 include("Js_Files/Layer.js");
 include("Js_Files/LayerGame.js");
+include("Js_Files/LayerSetting.js");
+include("Js_Files/LayerShop.js");
+include("Js_Files/LayerSelectLevel.js");
 
 class LayerMainMenu extends Layer
 {
@@ -30,24 +33,50 @@ class LayerMainMenu extends Layer
         playButton_text.setFontSize("48px Arial");
         playButton_text.setFillColor("#000000");
         playButton_text.setText("Play");
-        playButton_text.setWidth(1500);
+        playButton_text.setWidth(110);
         playButton_text.setHorizontalAlignment(Text.HorizontalAlignmentType.Center);
 
-        let mainMenuButton_2 = new Frame( new Point (36, 32) , new Size (28,15) );
-        mainMenuButton_2.setImageSrc("Done_assets/Yellow_button_2.png");
+        this.selectLevelButton = new Frame( new Point (36, 32) , new Size (28,15) );
+        this.selectLevelButton.setImageSrc("Done_assets/Yellow_button_2.png");
+		
+		let selectLevelButton_text = new Text ( new Point (50, 39.5) );
+		selectLevelButton_text.setFontSize("48px Arial");
+		selectLevelButton_text.setFillColor("#000000");
+		selectLevelButton_text.setText("Select Level");
+		selectLevelButton_text.setWidth(190);
+		selectLevelButton_text.setHorizontalAlignment(Text.HorizontalAlignmentType.Center);
 
-        let mainMenuButton_3 = new Frame ( new Point (36,54), new Size (28,15) );
-        mainMenuButton_3.setImageSrc("Done_assets/Yellow_button_2.png");
+		
 
-        let mainMenuButton_4 = new Frame ( new Point ( 36, 76), new Size (28,15) ) ;
-        mainMenuButton_4.setImageSrc("Done_assets/Yellow_button_2.png");
+        this.settingButton = new Frame ( new Point (36,54), new Size (28,15) );
+        this.settingButton.setImageSrc("Done_assets/Yellow_button_2.png");
+		
+		let settingButton_text = new Text( new Point (50,61.5));
+		settingButton_text.setFontSize("48px Arial");
+		settingButton_text.setFillColor("#000000");
+		settingButton_text.setText("Setting");
+		settingButton_text.setWidth(1500);
+		settingButton_text.setHorizontalAlignment(Text.HorizontalAlignmentType.Center);
+
+        this.shopButton = new Frame ( new Point ( 36, 76), new Size (28,15) ) ;
+        this.shopButton.setImageSrc("Done_assets/Yellow_button_2.png");
+		
+		let shopButton_text = new Text( new Point (50, 83.5));
+		shopButton_text.setFontSize("48px Arial");
+		shopButton_text.setFillColor("#000000");
+		shopButton_text.setText("Shop");
+		shopButton_text.setWidth(100);
+		shopButton_text.setHorizontalAlignment(Text.HorizontalAlignmentType.Center);	
 
         this.addRenderable(mainMenuPopup);
         this.addRenderable(this.playButton);
         this.addRenderable(playButton_text);
-        this.addRenderable(mainMenuButton_2);
-        this.addRenderable(mainMenuButton_3);
-        this.addRenderable(mainMenuButton_4);
+        this.addRenderable(this.selectLevelButton);
+		this.addRenderable(selectLevelButton_text);
+        this.addRenderable(this.settingButton);
+		this.addRenderable(settingButton_text);
+        this.addRenderable(this.shopButton);
+		this.addRenderable(shopButton_text);
     }
 
     onPlayReleased() {
@@ -60,6 +89,35 @@ class LayerMainMenu extends Layer
         game.addLayer(gameLayer);
 
     }
+	
+	onSettingReleased(){
+		
+		let game = Game.getInstance();
+		
+		game.removeLayer(LayerType.MainMenu);
+		
+		let settingLayer = new LayerSetting();
+		game.addLayer(settingLayer);
+	}
+	
+	onShopReleased(){
+		let game = Game.getInstance();
+		game.removeLayer(LayerType.MainMenu);
+		
+		let shopLayer = new LayerShop();
+		game.addLayer(shopLayer);
+		
+		
+	}
+	
+	onSelectLevelReleased(){
+		let game = Game.getInstance();
+		game.removeLayer(LayerType.MainMenu);
+		
+		let selectLevelLayer = new LayerSelectLevel();
+		game.addLayer(selectLevelLayer);
+		
+	}
 
     onMouseUp(mousePos) {
         super.onMouseUp(mousePos);
@@ -67,6 +125,22 @@ class LayerMainMenu extends Layer
         if (this.playButton.isPointInside(mousePos)) {
             this.onPlayReleased();
         }
+		
+		if (this.settingButton.isPointInside(mousePos)){
+			
+			this.onSettingReleased();
+		}
+		
+		if(this.shopButton.isPointInside(mousePos)){
+			
+			this.onShopReleased();
+		}
+		
+		if(this.selectLevelButton.isPointInside(mousePos)){
+			
+			this.onSelectLevelReleased();
+			
+		}
     }
 
 }

@@ -19,11 +19,16 @@ include("Js_Files/Size.js");
 
 class Field {
 		
-	constructor()
+	constructor(leftPoint)
 		{
-		this.level = new Level(new Point(38,10);
+		this.point = leftPoint;
+		this.level = new Level();
+		this.level.setColumns(8);
+		this.level.setRows(8);
+	
 		this.tiles = [];
 		this.tiles.push(new Tile(new Point( 40,12), new Size (150,150)));
+		this.init();
 		}
 		
 	
@@ -31,12 +36,30 @@ class Field {
 		let tokenTypesArray = [];
 		
 		for(let type in Tile.tilesTypes){
-			
 			tokenTypesArray.push(Tile.tilesTypes[type]);
-			
 		}
 		
-	}
+
+		
+		for (let i = 0; i < this.level.rows; i++){
+			this.tiles[i] = [];
+			for ( let j = 0; j < this.level.columns; j++){
+			this.tiles[i][j] = Math.floor(Math.random() * tokenTypesArray.length);
+			}
+		}
+		
+		
+		}
+		
+	render(){
+		
+			for (let i = 0; i < this.level.rows; i++){
+				for ( let j = 0; j < this.level.colummns; j++){
+					this.tiles[i][j].render();
+					}
+				}
+		}
+		
 	
 	
 }

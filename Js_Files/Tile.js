@@ -16,37 +16,45 @@ include("Js_Files/Frame.js");
 
 class Tile {
 
+	static tilesTypes = {
+			
+			Yellow : 0,
+			Green:1,
+			Blue:2,
+			Purple:3,
+			Orange:4,
+			Red:5		
+		};
+		
+	static tilesImages = {
+		
+			[this.tilesTypes.Yellow] : "D:/Match3/Done_assets/yellow.png",
+			[this.tilesTypes.Green]: "D:/Match3/Done_assets/green.png",
+			[this.tilesTypes.Blue]: "D:/Match3/Done_assets/blue.png",
+			[this.tilesTypes.Purple]: "D:/Match3/Done_assets/purple.png",
+			[this.tilesTypes.Orange]: "D:/Match3/Done_assets/orange.png",
+			[this.tilesTypes.Red]: "D:/Match3/Done_assets/red.png"
+		};
+
 	constructor(leftPoint, sizeTile){
 	
 	this.point = leftPoint;
 	this.size = sizeTile;
 	this.typeTile = 0;
-	this.tilesTypes = {
-		
-		Yellow:0,
-		Green:1,
-		Blue:2,
-		Purple:3,
-		Orange:4,
-		Red:5		
-	};
-	this.tilesImages ={
-		tilesTypes.Yellow: "D:\Match3\Done_assets\yellow.png";
-		tilesTypes.Green: "D:\Match3\Done_assets\green.png";
-		tilesTypes.Blue: "D:\Match3\Done_assets\blue.png";
-		tilesTypes.Purple: "D:\Match3\Done_assets\purple.png";
-		tilesTypes.Orange: "D:\Match3\Done_assets\orange.png";
-		tilesTypes.Red: "D:\Match3\Done_assets\red.png"
-	};
+	
 		
 	}
-	
-	
-	
 	setTypeTile(type){
 	
 	this.typeTile = type;
 	
+	}
+	
+	render(){
+		let image = new Image();
+		image.src =  this.src;
+		
+		Drawing.context.drawImage( image, this.point.x, this.point.y, this.size.width, this.size.height );
 	}
 	
 	

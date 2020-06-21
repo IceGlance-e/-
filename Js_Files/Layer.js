@@ -12,6 +12,9 @@ function include(url) {
 const LayerType = {
     MainMenu: 0,
     Game: 1,
+	Setting: 2,
+	Shop: 3,
+	SelectLevel: 4,
     None: 999999
 };
 

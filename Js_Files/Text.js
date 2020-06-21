@@ -24,6 +24,8 @@ class Text {
         this.text = "";
         this.font_size = "";
         this.fillColor = "";
+		this.borderText = "";
+		this.borderStyle = "";
 
         this.horizontalAlignment = Text.HorizontalAlignmentType.Center;
     }
@@ -52,14 +54,24 @@ class Text {
     setHorizontalAlignment(alignment) {
         this.horizontalAlignment = alignment;
     }
+	setBorderText(text){
+		
+		this.borderText = text;
+	}
+	
+	setBorderStyle(style){
+		
+		this.borderStyle = style;
+	}
 
     drawCenterText() {
-
+		
         Drawing.context.fillStyle = this.fillColor;
         Drawing.context.font = this.font_size;
         Drawing.context.textAlign = "center";
         Drawing.context.textBaseline = "middle";
         Drawing.context.fillText(this.text, this.point.x, this.point.y, this.widthText);
+		
 
     }
 

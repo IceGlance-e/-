@@ -15,10 +15,10 @@ include("Js_Files/Frame.js");
 
 class Level
 {
-    constructor(leftPoint)
+    constructor()
     {
 		
-		this.point = leftPoint;
+		
 		this.columns = 0;
 		this.rows = 0;
 		this.moves = 0;

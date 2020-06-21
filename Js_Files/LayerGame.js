@@ -10,6 +10,7 @@ function include(url) {
 }
 
 include("Js_Files/Layer.js");
+include("Js_Files/Field.js");
 
 class LayerGame extends Layer
 {
@@ -18,7 +19,20 @@ class LayerGame extends Layer
         super();
 
         this.setLayerType(LayerType.Game);
-
+		this.levels = [];
+		
+		let level = new Field(new Point(38,10));
+		this.levels.push(level);
+		
+		
 
     }
+	
+	
+	render(){
+		
+	this.levels[0].render();
+		
+		
+	}
 }
