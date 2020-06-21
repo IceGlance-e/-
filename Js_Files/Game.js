@@ -15,6 +15,7 @@ include ("Js_Files/Text.js");
 include("Js_Files/Layer.js");
 include("Js_Files/LayerMainMenu.js");
 include("Js_Files/Level.js");
+include("Js_Files/LayerPopup.js");
 
 class Game {
 
@@ -47,7 +48,7 @@ class Game {
         this.onMouseOut = this.onMouseOut.bind(this);
 
 		this.init();
-		
+
 		this.loop = this.loop.bind(this);
     }
 
