@@ -15,6 +15,7 @@ include ("Js_Files/Text.js");
 include("Js_Files/Layer.js");
 include("Js_Files/LayerMainMenu.js");
 include("Js_Files/Level.js");
+include("Js_Files/LayerPopup.js");
 
 class Game {
 
@@ -40,7 +41,7 @@ class Game {
         this.maxMoves = 29;
         this.movesLeft = 0;
 
-        this.score = 0;
+        this.score = 1256;
 
         // Current move
         this.currentmove = {column1: 0, row1: 0, column2: 0, row2: 0};
