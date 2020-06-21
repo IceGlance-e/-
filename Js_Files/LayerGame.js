@@ -161,7 +161,7 @@ class LayerGame extends Layer
         aiBotText.setFontSize("18px Verdana");
         aiBotText.setFillColor("white");
         aiBotText.setWidth(200);
-        aiBotText.setText("Show moves");
+        aiBotText.setText("Ai bot");
         aiBotText.setHorizontalAlignment(Text.HorizontalAlignmentType.Center);
 
         this.aiBotNumber = new Text(new Point(21.5, 71.5));
@@ -212,12 +212,32 @@ class LayerGame extends Layer
         this.addRenderable(this.field);
     }
 
-    restart() {
+    reset() {
         this.score = 0;
         this.spentMoves = 0;
         this.progress = 0;
+    }
 
+    restart() {
+        this.reset();
         this.field.init();
+    }
+
+    // returns true if next level exists
+    loadNextLevel() {
+        this.reset();
+
+        if (this.field.hasNextLevel()) {
+            this.field.loadNextLevel();
+            return true;
+        }
+
+        return false;
+    }
+
+    loadLastLevel() {
+        this.reset();
+        this.field.loadLastLevel();
     }
 
     exit() {
@@ -236,6 +256,10 @@ class LayerGame extends Layer
 
     getScore() {
         return this.score;
+    }
+
+    getLevelNumber() {
+        return this.field.getLevelNumber();
     }
 
     addProgress(progress) {

@@ -153,6 +153,30 @@ class Field {
         return this.currentLevelIndex + 1;
     }
 
+    hasNextLevel() {
+        return this.currentLevelIndex < Field.levels.length - 1;
+    }
+
+    loadNextLevel() {
+        this.currentLevelIndex++;
+        this.init();
+    }
+
+    loadLastLevel() {
+
+        let levelProgress = Game.getInstance().getUserInfo().levelProgress;
+
+        for (let i = 0; i < levelProgress.length; i++) {
+            if (!levelProgress[i].isPassed) {
+                this.currentLevelIndex = i;
+                this.init();
+                return;
+            }
+        }
+
+        this.currentLevelIndex = Field.levels.length - 1;
+    }
+
     consolePrintLevel() {
         for (let i = 0; i < this.level.rows; i++) {
             let row = "";
@@ -253,6 +277,18 @@ class Field {
         renderTiles.sort(
             (tile1, tile2) => tile2.renderPriority - tile1.renderPriority
         );
+
+        for (let i = 0; i < this.level.rows; i++) {
+            for (let j = 0; j < this.level.columns; j++) {
+
+                let tile = this.tiles[i][j];
+
+                Drawing.context.beginPath();
+                Drawing.context.strokeStyle = "white";
+                Drawing.context.lineWidth = 2;
+                Drawing.context.strokeRect(tile.point.x, tile.point.y, tile.size.width, tile.size.height);
+            }
+        }
 
         for (let tile of renderTiles) {
             tile.render();
@@ -639,8 +675,11 @@ class Field {
     onWin() {
         this.gameState = Field.gameStates.win;
 
+        let game = Game.getInstance();
+
         let levelNumber = this.getLevelNumber();
-        let match3LevelInfo = Game.getInstance().getUserInfo().levelProgress.find(level => level.levelNumber === levelNumber);
+        let userInfo = game.getUserInfo();
+        let match3LevelInfo = userInfo.levelProgress.find(level => level.levelNumber === levelNumber);
         match3LevelInfo.isPassed = true;
 
         let starCount = Math.floor(this.gameLayer.getScore() / this.level.scoreToReachStar);
@@ -652,11 +691,20 @@ class Field {
             match3LevelInfo.starsCount = starCount;
         }
 
-        Game.getInstance().saveGame();
+        userInfo.coins += Math.floor(game.getLayer(LayerType.Game).getScore() / 10);
+
+        game.saveGame();
+
+        let winLayer = new LayerWinPopup();
+        game.addLayer(winLayer);
     }
 
     onLoose() {
         this.gameState = Field.gameStates.over;
+
+        let game = Game.getInstance();
+        let userInfo = game.getUserInfo();
+        userInfo.coins += Math.floor(game.getLayer(LayerType.Game).getScore() / 100);
     }
 
     canSwapTiles(x1, y1, x2, y2) {

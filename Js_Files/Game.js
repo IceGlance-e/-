@@ -58,7 +58,8 @@ class Game {
         this.userInfo = {
             levelProgress: [],
             showMovesBoosterCount: 3,
-            aiBotUseCount: 5
+            aiBotUseCount: 5,
+            coins: 0
         };
 
         this.isLevelsGenerated = false;
@@ -156,6 +157,16 @@ class Game {
 
     removeLayer(layerType) {
         this.layers = this.layers.filter(layer => layer.layerType !== layerType);
+    }
+
+    getLayer(layerType) {
+        let layer = this.layers.find(layer => layer.layerType === layerType);
+
+        if (layer) {
+            return layer;
+        }
+
+        return null;
     }
 
     getTopLayer() {

@@ -46,8 +46,6 @@ class LayerMainMenu extends Layer
 		selectLevelButton_text.setWidth(190);
 		selectLevelButton_text.setHorizontalAlignment(Text.HorizontalAlignmentType.Center);
 
-		
-
         this.settingButton = new Frame ( new Point (36,54), new Size (28,15) );
         this.settingButton.setImageSrc("Done_assets/Yellow_button_2.png");
 		
@@ -86,8 +84,8 @@ class LayerMainMenu extends Layer
         game.removeLayer(LayerType.MainMenu);
 
         let gameLayer = new LayerGame();
+        gameLayer.loadLastLevel();
         game.addLayer(gameLayer);
-
     }
 	
 	onSettingReleased(){
@@ -106,8 +104,6 @@ class LayerMainMenu extends Layer
 		
 		let shopLayer = new LayerShop();
 		game.addLayer(shopLayer);
-		
-		
 	}
 	
 	onSelectLevelReleased(){
@@ -116,7 +112,6 @@ class LayerMainMenu extends Layer
 		
 		let selectLevelLayer = new LayerSelectLevel();
 		game.addLayer(selectLevelLayer);
-		
 	}
 
     onMouseUp(mousePos) {

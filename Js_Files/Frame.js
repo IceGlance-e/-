@@ -24,6 +24,7 @@ class Frame {
         this.borderWidth = 1;
         this.borderColor = "rgb(0, 0, 0, 0)";
         this.src = '';
+        this.isVisible = true;
     }
 
     setFiled(filled) {
@@ -40,6 +41,10 @@ class Frame {
 
     setImageSrc(src) {
         this.src = src;
+    }
+
+    setVisible(isVisible) {
+        this.isVisible = isVisible;
     }
 
     render_old() {
@@ -63,6 +68,10 @@ class Frame {
     }
 
     render() {
+        if (!this.isVisible) {
+            return;
+        }
+
         let image = new Image();
         image.src = this.src;
 
